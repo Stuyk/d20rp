@@ -1,0 +1,155 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="custom.css">
+	</head>
+	<body>
+	<div class="pagePanel" id="mainPage">
+		<div class="col-md-12">
+			<div class="newPanel">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="images/d20rp.png" />
+					</div>
+				</div>
+				<div class="newSpacer"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<h5>Welcome, are you an existing user or new user?</h4>
+					</div>
+				</div>
+				<div class="newSpacer"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<button onclick="showExistingUser()" class="btn btn-warning col-md-5">Existing User</button>
+						<button onclick="showNewUser()" class="btn btn-warning col-md-5 col-md-offset-2">New User</button>
+					</div>
+				</div>
+				<div class="newSpacer"></div>
+				<div class="row">
+					<div class="col-md-12" id="existingUser">
+						<input type="text" class="form-control" id="inputUsername" placeholder="Username">
+						<div class="newSpacer"></div>
+						<input type="password" class="form-control" id="inputPassword" placeholder="Password">
+						<div class="newSpacer"></div>
+						<button onclick="parseLogin()" class="btn btn-warning col-md-12">Login</button>
+					</div>
+					<div class="col-md-12" id="newUser" hidden>
+						<input type="text" class="form-control" id="inputNewUsername" placeholder="Username">
+						<div class="newSpacer"></div>
+						<input type="password" class="form-control" id="inputNewPassword" placeholder="Password">
+						<div class="newSpacer"></div>
+						<input type="password" class="form-control" id="inputNewPasswordTwo" placeholder="Password Again">
+						<div class="newSpacer"></div>
+						<button onclick="parseRegister()" class="btn btn-warning col-md-12">Register</button>
+						
+					</div>
+				</div>
+				<div class="newSpacer"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<div id="loaderAlert" class="col-md-4 col-md-offset-4 loader" hidden></div>
+						<div id="loginFailedAlert" class="col-md-12 alert alert-danger" role="alert" hidden>Oops, something didn't match up.</div>
+						<div id="registerFailedAlert" class="col-md-12 alert alert-danger" role="alert" hidden>Oops, that username is taken.</div>
+						<div id="registerSuccessAlert" class="col-md-12 alert alert-success" role="alert" hidden>Success, your username is now registered.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="jquery.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#inputUsername').focus();
+		});
+		
+		$("#mainPage").keydown(function(e) {
+			if (e.which == 13) {
+				parseLogin();
+			}
+		});
+		
+		function parseLogin()
+		{
+			hideAlerts()
+			var username = $('#inputUsername').val();
+			var password = $('#inputPassword').val();
+			$("#existingUser").hide();
+			$("#loaderAlert").show();
+				
+			if (username.length > 1) {
+				if (password.length > 1) {
+						resourceCall("tryToLogin", username, password);
+						return;
+					}
+			}
+			
+			$("#loaderAlert").hide();
+			$("#loginFailedAlert").show();
+		}
+		
+		function parseRegister()
+		{
+			hideAlerts();
+			var username = $('#inputNewUsername').val();
+			var password = $('#inputNewPassword').val();
+			var password2 = $('#inputNewPasswordTwo').val();
+			$("#existingUser").hide();
+			$("#loaderAlert").show();
+			
+			if (password !== password2) {
+				return;
+			}
+			
+			if (username.length > 1) {
+				resourceCall("tryToRegister", username, password);
+				return;
+			}
+			
+			$("#loaderAlert").hide();
+			$("#registerFailedAlert").show();
+		}
+	
+		function showExistingUser()
+		{
+			$("#existingUser").show();
+			$("#newUser").hide();
+		}
+		
+		function showNewUser()
+		{
+			$("#newUser").show();
+			$("#existingUser").hide();
+		}
+		
+		function loginFailed()
+		{
+			$("#loginFailedAlert").show();
+			$("#loaderAlert").hide();
+			$("#existingUser").show();
+		}
+		
+		function registerFailed()
+		{
+			$("#registerFailedAlert").show();
+			$("#loaderAlert").hide();
+			$("#newUser").show();
+		}
+		
+		function registerSuccess()
+		{
+			$("#registerSuccessAlert").show();
+		}
+		
+		function hideAlerts() {
+			$("#loaderAlert").hide();
+			$("#registerFailedAlert").hide();
+			$("#loginFailedAlert").hide();
+			$("#registerSuccessAlert").hide();
+		}
+	</script>
+	</body>
+</html>
