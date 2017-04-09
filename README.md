@@ -1,5 +1,7 @@
 # d20rp
 
+## THIS IS IN NO WAY IN A MAJOR RELEASE STATE
+
 #### GTANetwork: A DND Inspired Gamemode
 
 Everything you know about roleplay. Go ahead and throw that out the window. This framework is meant to cater to the true roleplayers. The ones who sit at home and roll dice across their table tops.
